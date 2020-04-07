@@ -1,11 +1,18 @@
 class ItemsController<ApplicationController
 
   def index
+
     if params[:merchant_id]
       @merchant = Merchant.find(params[:merchant_id])
       @items = @merchant.items
     else
-      @items = Item.all
+      @page = params[:page].to_i
+      @page = 0 unless @page
+      @items = Item.all.includes(:merchant).limit(50).offset(50 * @page)
+      @top_five_ordered = Item.by_quantity_ordered("DESC")
+      @bottom_five_ordered = Item.by_quantity_ordered("ASC")
+      @top_five_reviewed = Item.by_average_rating("DESC")
+      @bottom_five_reviewed = Item.by_average_rating("ASC")
     end
   end
 

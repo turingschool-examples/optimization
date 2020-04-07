@@ -2,6 +2,20 @@
   <h1 class="mt-4 mb-2"><%= link_to @merchant.name, "/merchants/#{@merchant.id}"%><span> Items</span></h1>
 <% else %>
   <h1 class="mt-4 mb-2">All Items</h1>
+  <div class="container">
+    <nav class="navbar navbar-expand-lg", id="items-index">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <%= link_to "Previous Page", items_path(page: @page - 1), class: "nav-link" if @page > 0%>
+          </li>
+          <li class="nav-item">
+            <%= link_to "Next Page", items_path(page: @page + 1), class: "nav-link" %>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
 <% end %>
 <section class="container-fluid row justify-content-center">
   <% @items.active_only.each do |item| %>
@@ -23,32 +37,56 @@
 
 <% if @merchant %>
   <p align="center"><%= link_to "Add New Item", "/merchants/#{@merchant.id}/items/new", class: 'btn btn-primary mt-3' %></p>
+<% else %>
+  <h1>Item Statistics</h1>
+  <section class='container-fluid row justify-content-center mt-4 mb-5'>
+
+    <section class='card row justify-content-center m-1 p-3 review-width'>
+      <h3 class='text-center'>Five Most Ordered Items</h3>
+      <section class='column justify-content-center bottom-five'>
+        <% @top_five_ordered.each_with_index do |item, index| %>
+          <article class='card card-body bg-light m-2' id="top-five-ordered<%= index %>">
+            <h5><%= link_to item.name, "/items/#{item.id}" %></h5>
+            <p>Quantity Ordered: <%= item.quantity_ordered %></p>
+          </article>
+        <% end %>
+      </section>
+    </section>
+
+    <section class='card row justify-content-center m-1 p-3 review-width'>
+      <h3 class='text-center'>Five Fewest Ordered Items</h3>
+      <section class='column justify-content-center bottom-five'>
+        <% @bottom_five_ordered.each_with_index do |item, index| %>
+          <article class='card card-body bg-light m-2' id="bottom-five-ordered<%= index %>">
+            <h5><%= link_to item.name, "/items/#{item.id}" %></h5>
+            <p>Quantity Ordered: <%= item.quantity_ordered %></p>
+          </article>
+        <% end %>
+      </section>
+    </section>
+
+    <section class='card row justify-content-center m-1 p-3 review-width'>
+      <h3 class='text-center'>Five Best Reviewed Items</h3>
+      <section class='column justify-content-center top-five'>
+        <% @top_five_reviewed.each_with_index do |item, index| %>
+          <article class='card card-body bg-light m-2' id="top-five-reviewed-<%= index %>">
+            <h5><%= link_to item.name, "/items/#{item.id}" %></h5>
+            <p>Average Rating: <%= item.average_rating.round(2) %></p>
+          </article>
+        <% end %>
+      </section>
+    </section>
+
+    <section class='card row justify-content-center m-1 p-3 review-width'>
+      <h3 class='text-center'>Five Worst Reviewed Items</h3>
+      <section class='column justify-content-center top-five'>
+        <% @bottom_five_reviewed.each_with_index do |item, index| %>
+          <article class='card card-body bg-light m-2' id="bottom-five-reviewed-<%= index %>">
+            <h5><%= link_to item.name, "/items/#{item.id}" %></h5>
+            <p>Average Rating: <%= item.average_rating.round(2) %></p>
+          </article>
+        <% end %>
+      </section>
+    </section>
+  </section>
 <% end %>
-
-<br>
-
-<section class='container-fluid row justify-content-center mt-4 mb-5'>
-  <section class='card row justify-content-center m-1 p-3 review-width'>
-    <h3 class='text-center'>Five Most Popular Items</h3>
-    <section class='column justify-content-center top-five'>
-      <% @items.top_five_ordered.each_with_index do |item, index| %>
-        <article class='card card-body bg-light m-2' id="top-five-<%= index %>">
-          <h5><%= link_to item.name, "/items/#{item.id}" %></h5>
-          <p>Quantity Ordered: <%= item.quantity_ordered %></p>
-        </article>
-      <% end %>
-    </section>
-  </section>
-
-  <section class='card row justify-content-center m-1 p-3 review-width'>
-    <h3 class='text-center'>Five Least Popular Items</h3>
-    <section class='column justify-content-center bottom-five'>
-      <% @items.bottom_five_ordered.each_with_index do |item, index| %>
-        <article class='card card-body bg-light m-2' id="bottom-five-<%= index %>">
-          <h5><%= link_to item.name, "/items/#{item.id}" %></h5>
-          <p>Quantity Ordered: <%= item.quantity_ordered %></p>
-        </article>
-      <% end %>
-    </section>
-  </section>
-</section>

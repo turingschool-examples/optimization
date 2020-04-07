@@ -6,16 +6,14 @@ RSpec.describe "User registration form" do
 
     click_on "Register"
 
-    expect(current_path).to eq("/register")
-
-    fill_in :name, with: "Cowboy Joe"
-    fill_in :address, with: "123 Ranch Dr"
-    fill_in :city, with: "Austin"
-    fill_in :state, with: "Texas"
-    fill_in :zip, with: "78520"
-    fill_in :email, with: "CowboyJoe@gmail.com"
-    fill_in :password, with: "YeeHaw123"
-    fill_in :password_confirmation, with: "YeeHaw123"
+    fill_in :user_name, with: "Cowboy Joe"
+    fill_in :user_address, with: "123 Ranch Dr"
+    fill_in :user_city, with: "Austin"
+    fill_in :user_state, with: "Texas"
+    fill_in :user_zip, with: "78520"
+    fill_in :user_email, with: "CowboyJoe@gmail.com"
+    fill_in :user_password, with: "YeeHaw123"
+    fill_in :user_password_confirmation, with: "YeeHaw123"
 
     click_button "Create User"
 

@@ -32,16 +32,27 @@ class Item <ApplicationRecord
     where(active?: true)
   end
 
-  def quantity_ordered
-    item_orders.sum(:quantity)
+  def self.by_quantity_ordered(direction = "ASC")
+    joins(:item_orders)
+    .select('items.*, sum(item_orders.quantity) as quantity_ordered')
+    .group(:id)
+    .order("quantity_ordered #{direction}")
+    .limit(5)
   end
 
-  def self.top_five_ordered
-    joins(:item_orders).group('items.id').order('sum(item_orders.quantity) DESC').limit(5)
-  end
+  def self.by_average_rating(direction = "ASC")
+    eligible_items = joins(:merchant, :orders)
+                      .where(merchants: {enabled?: true})
+                      .where(items: {active?: true})
+                      .where(orders: {status: :shipped})
+                      .group(:id)
+                      .having('count(*) > 100')
 
-  def self.bottom_five_ordered
-    joins(:item_orders).group('items.id').order('sum(item_orders.quantity)').limit(5)
+    eligible_items.joins(:reviews)
+                  .group(:id)
+                  .select("items.*, avg(reviews.rating) as average_rating")
+                  .order("average_rating #{direction}")
+                  .limit(5)
   end
 
   def reduce_inventory(quantity)

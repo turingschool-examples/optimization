@@ -10,9 +10,6 @@ class Merchant <ApplicationRecord
                         :zip,
                         :enabled?
 
-  validates_numericality_of :zip, only_integer: true
-  validates_length_of :zip, is: 5
-
   def no_orders?
     item_orders.empty?
   end
@@ -46,7 +43,9 @@ class Merchant <ApplicationRecord
   end
 
   def total_value_in_order(order)
-    order.item_orders.where(item_id: items.pluck(:id)).sum('price * quantity')
+    # order.item_orders.where(item_id: items.pluck(:id)).sum('price * quantity')
+    order.item_orders.joins(:item).where(items: {merchant_id: self.id}).sum('item_orders.price * item_orders.quantity')
+
   end
 
 

@@ -5,6 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+ruby '2.5.3'
 
 gem 'rails', '~> 5.1.7'
 gem 'pg', '>= 0.18', '< 2.0'
@@ -18,8 +19,6 @@ gem 'jquery-rails'
 gem 'bcrypt', '~> 3.1.7'
 
 
-
-
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails'
@@ -28,6 +27,7 @@ group :development, :test do
   gem 'pry'
   gem 'simplecov'
   gem 'shoulda-matchers'
+  gem 'faker'
   # gem 'selenium-webdriver'
 end
 

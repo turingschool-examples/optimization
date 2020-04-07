@@ -38,7 +38,7 @@ Rails.application.routes.draw do
     resources :items, except: [:show]
 
     root 'dashboard#index'
-    
+
     get '/orders/:id', to: 'orders#show'
     patch '/orders/:order_id/item_orders/:item_order_id', to: 'orders#update'
   end
@@ -56,5 +56,7 @@ Rails.application.routes.draw do
     patch '/merchants/:id', to: 'merchants#update'
     get '/merchants/:merchant_id/orders/:order_id', to: 'merchant_orders#show'
     patch '/merchants/:merchant_id/orders/:order_id/item_orders/:item_order_id', to: 'merchant_orders#update'
+
+    post '/promotions', to: 'promotions#create'
   end
 end

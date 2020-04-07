@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(user_params)
+    @user = User.new(params[:user])
     if @user.save
       flash[:success] = ["Congratulations #{@user.name}, you have registered and are now logged in!"]
       session[:user_id] = @user.id
